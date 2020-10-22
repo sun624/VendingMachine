@@ -23,7 +23,8 @@ using System.Net.Mime;
 /// it can email vendor if something is sold out.
 /// it has a money change system which gives back change in the combination of bills and coins.
 /// </summary>
-
+#warning Email replenishment notification needs modification to your existing security configuration. It may not work on your specific email account. 
+         
 namespace VendingMachine
 {
     #region enumeration

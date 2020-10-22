@@ -142,7 +142,7 @@ namespace VendingMachine
                 //create a first order with quantity and name by using dictionary.
                 try
                 {       //if the item selected is sold out or is not enough, print message
-                    if (lookup[choice.ToUpper()].isSoldOut() || qty > lookup[choice.ToUpper()].Count)
+                    if (lookup[choice.ToUpper()].IsSoldOut() || qty > lookup[choice.ToUpper()].Count)
                     {
                         Console.WriteLine("The item you selected is either sold out or doesn't have enough quantity," +
                             " please purchase other items");
@@ -185,7 +185,7 @@ namespace VendingMachine
                 {
                     try
                     {
-                        if (lookup[choice.ToUpper()].isSoldOut() || qty > lookup[choice.ToUpper()].Count)
+                        if (lookup[choice.ToUpper()].IsSoldOut() || qty > lookup[choice.ToUpper()].Count)
                         {
                             Console.WriteLine("The item you selected is either sold out or doesn't have enough quantity," +
                                        " please purchase other items");
@@ -280,6 +280,7 @@ namespace VendingMachine
         private static void DisplayMoneyInfo(Dictionary<bills, int> bills, Dictionary<coins, int> coins)
         { 
             //TODO
+
         }
 
         /// <summary>
@@ -346,7 +347,7 @@ namespace VendingMachine
             Console.WriteLine("QTY\t   Name\t\tPrice");
             foreach (var item in Order)
             {
-             Console.WriteLine($"{item.Count}\t {item.getName()}\t {item.GetPrice()}");
+             Console.WriteLine($"{item.Count}\t {item.GetName()}\t {item.GetPrice()}");
             }
             Console.WriteLine("===========Total=============");
             //calculate total order item count
@@ -385,7 +386,7 @@ namespace VendingMachine
             Console.WriteLine("-------------------------------");
             for (int i = 0; i < menu.Count; i++)
             {   // display menu items location, name and quantity
-                Console.WriteLine("|{0,5}|{1,10}|{2,5}|", lookup.FirstOrDefault(x => (x.Value.getName() == menu[i].getName())).Key, menu[i].getName(), menu[i].Count);
+                Console.WriteLine("|{0,5}|{1,10}|{2,5}|", lookup.FirstOrDefault(x => (x.Value.GetName() == menu[i].GetName())).Key, menu[i].getName(), menu[i].Count);
             }
             Console.WriteLine("*********************************");
         }
@@ -458,7 +459,7 @@ namespace VendingMachine
             Price = price;
         }
 
-        public string getName()
+        public string GetName()
         {
             return Name;
         }
@@ -484,7 +485,7 @@ namespace VendingMachine
             }
         }
 
-        public bool isSoldOut()
+        public bool IsSoldOut()
         {
             return Count == 0;
         }

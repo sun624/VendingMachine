@@ -16,13 +16,13 @@ using System.Collections;
 using System.Net.Mail;
 using System.Net.Mime;
 
-
-
-//inventory check system
-// bills and coins check system
-//administrator account
-
-
+/// <summary>
+/// welcome to my vending machine. 
+/// it has a robust user interaction process, foolproof.
+/// it has super user account which can show information about the vending machine
+/// it can email vendor if something is sold out.
+/// it has a money change system which gives back change in the combination of bills and coins.
+/// </summary>
 
 namespace VendingMachine
 {
@@ -44,6 +44,7 @@ namespace VendingMachine
         twenty_dollar = 20
     }
     #endregion
+
     public class Program
     {
 
@@ -51,10 +52,13 @@ namespace VendingMachine
         {
             #region Initialization
             //display welcome window
-            Welcome("Welcome.txt",150,20);
+            Welcome("Welcome.txt", 150, 20);
+
             //display my vending machine
             DisplayMenu();
+
             int _initialQuantity = 10;
+
             // initialize item objects with quantity, name and price. Initial quantity is 10.
             Item Coke = new Item(_initialQuantity, "Coke", 0.99);
             Item Sprite = new Item(_initialQuantity, "Sprite", 0.99);
@@ -103,7 +107,7 @@ namespace VendingMachine
             moneyBills.Add(bills.five_dollar, 50);
             moneyBills.Add(bills.ten_dollar, 50);
 
-            //initialize a customer who has one one dollar bill, one five dollar bill, one ten dollar bill and one twenty dollar bill.
+            //initialize a customer who has a one dollar bill, one five dollar bill, one ten dollar bill and one twenty dollar bill.
             var customercoins = new Dictionary<coins, int>();
             customercoins.Add(coins.quarter, 0);
             customercoins.Add(coins.dime, 0);
@@ -126,9 +130,9 @@ namespace VendingMachine
             //let user input the location of item he wants.
             string choice = Console.ReadLine();
             string password = File.ReadAllText("AdministratorPassword.txt");
-            if (choice == password) 
+            if (choice == password)
             {
-                Superuser(menu,lookup,moneyBills,moneyCoins);
+                Superuser(menu, lookup, moneyBills, moneyCoins);
             }
             Console.WriteLine("How many you want?");
 
@@ -149,13 +153,13 @@ namespace VendingMachine
                     }
                     else
                     {   //create the first order
-                        var firstOrder = new Item(qty, (lookup[choice.ToUpper()].getName() + "_order"), lookup[choice.ToUpper()].GetPrice());
+                        var firstOrder = new Item(qty, (lookup[choice.ToUpper()].GetName() + "_order"), lookup[choice.ToUpper()].GetPrice());
                         //add the first order to the order list.
                         Order.Add(firstOrder);
                         //reduce the count of the item in the vending machine by one.
                         lookup[choice.ToUpper()].Sold(qty);
                         //display order information: quantity of item, location and item name.
-                        Console.WriteLine($"This order has {Order[0].Count} {choice}:{Order[0].getName()}, Total price is {Order[0].Count * Order[0].GetPrice()}.");
+                        Console.WriteLine($"This order has {Order[0].Count} {choice}:{Order[0].GetName()}, Total price is {Order[0].Count * Order[0].GetPrice()}.");
 
                         //display vending machine item inventory
                         DisplayInventory(menu, lookup);
@@ -192,11 +196,11 @@ namespace VendingMachine
                         }
                         else
                         {   //create follow on orders
-                            var restOrders = new Item(qty, (lookup[choice.ToUpper()].getName() + "_order"), lookup[choice.ToUpper()].GetPrice());
+                            var restOrders = new Item(qty, (lookup[choice.ToUpper()].GetName() + "_order"), lookup[choice.ToUpper()].GetPrice());
 
                             foreach (var item in Order)
                             {   // if customer select duplicate item in the previous order, only add quantity to the previous order
-                                if (restOrders.getName() == item.getName())
+                                if (restOrders.GetName() == item.GetName())
                                 {
                                     item.Count += qty;
                                     //create an empty order
@@ -238,10 +242,52 @@ namespace VendingMachine
 
         }
         #region methods
-        private static void Superuser(List<Item> menu, Dictionary<string, Item> lookup, 
-            Dictionary<bills,int> bills, Dictionary<coins, int> coins)
+        /// <summary>
+        /// Super user account, show information about menu inventory and bills and coins inventory 
+        /// and a test function for email replenishment notification system
+        /// </summary>
+        private static void Superuser(List<Item> menu, Dictionary<string, Item> lookup,
+           Dictionary<bills, int> bills, Dictionary<coins, int> coins)
         {
+            //display welcome super user window
             Welcome("WelcomeSuper.txt", 65, 37);
+            do
+            {
+                //display main menu, has 3 options
+                MainMenu();
+
+                Int32.TryParse(Console.ReadLine(), out int option);
+                while (option > 3 && option <= 0)
+                {   //if customer didn't choose from 1 to 3, choose again
+                    Console.WriteLine("Please select from 1 to 3");
+                    Int32.TryParse(Console.ReadLine(), out option);
+                }
+                switch (option)
+                {
+                    case 1:
+                        //display menu items inventory
+                        DisplayInventory(menu, lookup);
+                        break;
+                    case 2:
+                        //display bills and coins inventory
+                        DisplayMoneyInfo(bills, coins);
+                        break;
+                    case 3:
+                        //email replenishment notification system
+                        Console.WriteLine("\nReplenishment email notification is{0} functional.", Email.Send() ? "" : " NOT");
+                        break;
+                }
+                Console.WriteLine("Exit? Y or N");
+            } while (Console.ReadLine().ToUpper() == "N"); //if answer is no, return to main menu.
+            //if answer is yes, exit the application
+            Environment.Exit(0);
+        }
+
+        /// <summary>
+        /// Display main menu in super user account
+        /// </summary>
+        private static void MainMenu()
+        {
             Console.WriteLine("=======================");
             Console.WriteLine("|Option|     |Function|");
             Console.WriteLine("=======================");
@@ -250,36 +296,28 @@ namespace VendingMachine
             Console.WriteLine("  3               Test ");
             Console.WriteLine("=======================");
             Console.Write("\nPlease select an option: ");
-
-            Int32.TryParse(Console.ReadLine(), out int option);
-            while (option > 3 && option <= 0)
-            {   //if customer didn't choose from 1 to 3, choose again
-                Console.WriteLine("Please select from 1 to 3");
-                Int32.TryParse(Console.ReadLine(), out option);
-            }
-            switch (option)
-            {
-                case 1:
-                    DisplayInventory(menu, lookup);
-                    break;
-                case 2:
-                    
- 
-                    break;
-                case 3:
-                    Console.WriteLine("Please swipe your debit card");
-
-                    break;
-
-            }
         }
+
         /// <summary>
-        /// 
-        /// 
+        /// Display vending machine bills and coins inventory
         /// </summary>
         private static void DisplayMoneyInfo(Dictionary<bills, int> bills, Dictionary<coins, int> coins)
-        { 
-            //TODO
+        {
+            Console.WriteLine("==============================");
+            Console.WriteLine("|Money|                  |QTY|");
+            Console.WriteLine("==============================");
+            // display every bill and quantity
+            foreach (var key in bills.Keys)
+            {
+                Console.WriteLine($"{key.ToString()}\t\t   {bills[key]}");
+                Console.WriteLine("------------------------------");
+            }
+            // display every coin and quantity
+            foreach (var key in coins.Keys)
+            {
+                Console.WriteLine($"{key.ToString()}\t\t\t   {coins[key]}");
+                Console.WriteLine("------------------------------");
+            }
 
         }
 
@@ -313,7 +351,7 @@ namespace VendingMachine
                     break;
             }
         }
-        
+
         /// <summary>
         /// Cash payment method
         /// </summary>
@@ -347,7 +385,7 @@ namespace VendingMachine
             Console.WriteLine("QTY\t   Name\t\tPrice");
             foreach (var item in Order)
             {
-             Console.WriteLine($"{item.Count}\t {item.GetName()}\t {item.GetPrice()}");
+                Console.WriteLine($"{item.Count}\t {item.GetName()}\t {item.GetPrice()}");
             }
             Console.WriteLine("===========Total=============");
             //calculate total order item count
@@ -386,7 +424,8 @@ namespace VendingMachine
             Console.WriteLine("-------------------------------");
             for (int i = 0; i < menu.Count; i++)
             {   // display menu items location, name and quantity
-                Console.WriteLine("|{0,5}|{1,10}|{2,5}|", lookup.FirstOrDefault(x => (x.Value.GetName() == menu[i].GetName())).Key, menu[i].getName(), menu[i].Count);
+                Console.WriteLine("|{0,5}|{1,10}|{2,5}|", lookup.FirstOrDefault(x =>
+                (x.Value.GetName() == menu[i].GetName())).Key, menu[i].GetName(), menu[i].Count);
             }
             Console.WriteLine("*********************************");
         }
@@ -479,7 +518,7 @@ namespace VendingMachine
             //if sold, deduct the quantity from item count
             Count -= qty;
             if (Count == 0)
-            {   
+            {
                 Console.WriteLine("You are lucky, grabbed the last one(s).");
                 Email.Send();
             }
@@ -625,7 +664,7 @@ namespace VendingMachine
         /// <summary>
         /// send email source:http://csharp.net-informations.com/communications/csharp-smtp-mail.htm
         /// </summary>
-        public static void Send()
+        public static bool Send()
         {
             try
             {
@@ -644,6 +683,7 @@ namespace VendingMachine
                 SmtpServer.EnableSsl = true;
 
                 SmtpServer.Send(mail);
+                return true;
             }
 
             catch (SmtpException ex)

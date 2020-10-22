@@ -672,14 +672,15 @@ namespace VendingMachine
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
-                mail.From = new MailAddress("sunyichun624@gmail.com");
+                string user = File.ReadAllText("emailuser.txt");
+                mail.From = new MailAddress(user);
                 mail.To.Add("yichun.sun@outlook.com");
                 mail.Subject = "Vending machine replenishment";
                 mail.Body = "CS205 Vending machine needs replenishment. hurry UP!";
 
                 SmtpServer.Port = 587;
                 string password = File.ReadAllText("emailpassword.txt");
-                SmtpServer.Credentials = new System.Net.NetworkCredential("sunyichun624@gmail.com", password);
+                SmtpServer.Credentials = new System.Net.NetworkCredential(user, password);
                 SmtpServer.EnableSsl = true;
 
                 SmtpServer.Send(mail);

@@ -241,6 +241,13 @@ namespace VendingMachine
             Payment(Order, customer, moneyBills, moneyCoins);
             #endregion
 
+            #region Notification
+            foreach (var item in menu)
+            {
+                if (item.IsSoldOut())
+                    Email.Send();
+            }
+            #endregion
         }
         #region methods
         /// <summary>
@@ -521,7 +528,6 @@ namespace VendingMachine
             if (Count == 0)
             {
                 Console.WriteLine("You are lucky, grabbed the last one(s).");
-                Email.Send();
             }
         }
 

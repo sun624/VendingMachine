@@ -559,6 +559,7 @@ namespace VendingMachine
             Console.WriteLine("\nHere is you change.");
             Console.WriteLine("\n++++++++++++++++++++++++++");
             Console.WriteLine("{0,-20}{1,5}", "Money", "QTY");
+            Console.WriteLine("---------------------------");
             //once paid, put change into dictionary to store quantity and bills and coins
             Dictionary<string, int> change = GetChange(totalPrice, cash);
             //remove empty bill and coin slot from dictionary

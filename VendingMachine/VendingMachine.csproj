@@ -58,6 +58,7 @@
       <Link>.editorconfig</Link>
     </None>
     <None Include="App.config" />
+    <None Include="VendingMachine.exe.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -67,6 +68,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\Debug\welcome.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AdministratorPassword.txt" />
+    <Content Include="menu.txt" />
+    <Content Include="VendingMachine.exe" />
+    <Content Include="VendingMachine.pdb" />
+    <Content Include="welcome.txt" />
+    <Content Include="welcomeSuper.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

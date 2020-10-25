@@ -73,6 +73,9 @@
     <Content Include="bin\Debug\VendingMachine.pdb" />
     <Content Include="bin\Debug\welcome.txt" />
     <Content Include="bin\Debug\welcomeSuper.txt" />
+    <Content Include="superuser.png" />
+    <Content Include="vendingmachine.png" />
+    <Content Include="welcome.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

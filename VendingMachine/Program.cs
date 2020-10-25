@@ -682,7 +682,7 @@ namespace VendingMachine
 
                 string user = File.ReadAllText("emailuser.txt");
                 mail.From = new MailAddress(user);
-                mail.To.Add("yichun.sun@outlook.com");
+                mail.To.Add("example@outlook.com");
                 mail.Subject = "Vending machine replenishment";
                 mail.Body = "CS205 Vending machine needs replenishment. hurry UP!";
 
